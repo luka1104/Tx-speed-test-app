@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Center>
-        <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+        <Grid gridTemplateColumns={{sm: 'repeat(1, 1fr)', lg: 'repeat(3, 1fr)'}} gap={6}>
           <Card
             name="ethereum"
             icon="https://s2.coinmarketcap.com/static/img/coins/200x200/1027.png"
