@@ -21,11 +21,16 @@ import {
     const handleTransfer = async () => {
       start();
       toast('transaction sended!')
+      const data = {
+        'address': "0x50B80aa3877fC852f3194a0331177FDDcF0891bf",
+        'chain': props.name
+      }
       fetch(`/api/transfer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(data),
       })
       .then(resp => {
         if(resp.status === 200) {
