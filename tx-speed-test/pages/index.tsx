@@ -1,8 +1,9 @@
+import type { NextPage } from 'next'
 import React from 'react'
 import { Center, Grid } from '@chakra-ui/react'
 import Card from '../src/components/card'
 
-const index = () => {  
+const Home: NextPage = () => {  
   return (
     <>
       <Center>
@@ -28,4 +29,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Home
