@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.6",
     "@chakra-ui/react": "^2.2.6",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
@@ -17,6 +18,8 @@
     "next": "12.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.4.0",
+    "react-spinners": "^0.13.4",
     "react-timer-hook": "^3.0.5",
     "react-toastify": "^9.0.7",
     "web3": "^1.7.5"
