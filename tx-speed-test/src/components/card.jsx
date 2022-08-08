@@ -8,8 +8,8 @@ import {
     Text,
     Stack,
     Button,
-    Link,
     useColorModeValue,
+    Link,
   } from '@chakra-ui/react';
   import React, { useState } from 'react'
   import { useStopwatch } from "react-timer-hook";
@@ -17,7 +17,7 @@ import {
   import BeatLoader from "react-spinners/BeatLoader";
   import { HiOutlineExternalLink } from 'react-icons/hi'
   
-  export default function SocialProfileWithImage(props) {
+  export default function Card(props) {
     const [loading, setLoading] = useState(false);
     const [txHash, setTxHash] = useState('');
     const { seconds, minutes, hours, isRunning, start, pause, reset } = useStopwatch({ autoStart: false });
@@ -109,9 +109,9 @@ import {
                 </Text>
               </Stack>
             </Stack>
-            {loading ? (
               <Button
-                disabled
+                disabled={loading}
+                onClick={handleTransfer}
                 w={'full'}
                 mt={8}
                 bg={useColorModeValue('#151f21', 'gray.900')}
@@ -122,23 +122,12 @@ import {
                   boxShadow: 'lg',
                 }}
               >
-                <BeatLoader color={"#A9A9A9"} />
+                {loading ? (
+                  <BeatLoader color={"#A9A9A9"} />
+                ) : (
+                  <>Send Tx</>
+                )}
               </Button>
-            ) : (
-              <Button
-                onClick={handleTransfer}
-                w={'full'}
-                mt={8}
-                bg={useColorModeValue('#151f21', 'gray.900')}
-                color={'white'}
-                rounded={'md'}
-                _hover={{
-                  transform: 'translateY(-2px)',
-                  boxShadow: 'lg',
-                }}>
-                Send Tx
-              </Button>
-            )}
           </Box>
         </Box>
       </Center>
