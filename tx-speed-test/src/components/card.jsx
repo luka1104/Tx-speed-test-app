@@ -10,6 +10,7 @@ import {
     Button,
     useColorModeValue,
     Link,
+    Icon,
   } from '@chakra-ui/react';
   import React, { useState } from 'react'
   import { useStopwatch } from "react-timer-hook";
@@ -25,6 +26,7 @@ import {
       return (str.length > n) ? str.slice(0, n-1) + '...' : str;
     }
     const handleTransfer = async () => {
+      setTxHash('');
       const res = await fetchAPI();
       console.log(res);
       setTxHash(res.receipt.transactionHash);
@@ -93,14 +95,14 @@ import {
   
             <Stack direction={'row'} justify={'center'} spacing={6}>
               <Stack spacing={0} align={'center'}>
-                <Text fontWeight={600}>{seconds}s</Text>
+                <Text fontWeight={600}>{minutes ? <>{minutes}m</> : (<></>)}{seconds}s</Text>
                 <Text fontSize={'sm'} color={'gray.500'}>
                   Tx speed
                 </Text>
               </Stack>
               <Stack spacing={0} align={'center'}>
                 {txHash ? (
-                  <Link href={`${props.scanURI}${txHash}`} fontWeight={600}>{shortenString(txHash, 6)}</Link>
+                  <Link href={`${props.scanURI}${txHash}`} fontWeight={600}>{shortenString(txHash, 6)}<Icon ml='2px' verticalAlign="-15%" as={HiOutlineExternalLink} /></Link>
                 ) : (
                   <Text fontWeight={600}>-</Text>
                 )}
