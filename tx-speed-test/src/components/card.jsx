@@ -25,13 +25,15 @@ import {
     const shortenString = (str, n) => {
       return (str.length > n) ? str.slice(0, n-1) + '...' : str;
     }
+
     const handleTransfer = async () => {
       setTxHash('');
-      const res = await fetchAPI();
-      console.log(res);
-      setTxHash(res.receipt.transactionHash);
+      const transactionHash = await fetchTransactionHash();
+      console.log(transactionHash);
+      setTxHash(transactionHash);
     }
-    const fetchAPI = async () => {
+
+    const fetchTransactionHash = async () => {
       setLoading(true);
       start();
       toast('transaction sended!')
@@ -39,27 +41,22 @@ import {
         'address': "0x50B80aa3877fC852f3194a0331177FDDcF0891bf",
         'chain': props.name
       }
-      return fetch(`/api/transfer`, {
+      const resp = await fetch(`/api/transfer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       })
-      .then(resp => {
-        if(resp.status === 200) {
-          setLoading(false);
-          pause();
-          toast('transaction confirmed!')
-          const data = resp.json()
-          console.log(data);
-          return data;
-        }
-      }).catch(e => {
-        console.log(e);
-        return e;
-      })
+      if(resp.status !== 200) {
+        throw Error("Server error");
+      }
+      setLoading(false);
+      pause();
+      toast('transaction confirmed!')
+      return (await resp.json()).receipt.transactionHash;
     }
+    
     return (
       <Center py={6}>
         <Box
@@ -102,7 +99,7 @@ import {
               </Stack>
               <Stack spacing={0} align={'center'}>
                 {txHash ? (
-                  <Link href={`${props.scanURI}${txHash}`} fontWeight={600}>{shortenString(txHash, 6)}<Icon ml='2px' verticalAlign="-15%" as={HiOutlineExternalLink} /></Link>
+                  <Link href={props.scanURI + txHash} fontWeight={600}>{shortenString(txHash, 6)}<Icon ml='2px' verticalAlign="-15%" as={HiOutlineExternalLink} /></Link>
                 ) : (
                   <Text fontWeight={600}>-</Text>
                 )}
@@ -114,11 +111,11 @@ import {
               <Button
                 disabled={loading}
                 onClick={handleTransfer}
-                w={'full'}
+                w="full"
                 mt={8}
                 bg={useColorModeValue('#151f21', 'gray.900')}
-                color={'white'}
-                rounded={'md'}
+                color="white"
+                rounded="md"
                 _hover={{
                   transform: 'translateY(-2px)',
                   boxShadow: 'lg',
