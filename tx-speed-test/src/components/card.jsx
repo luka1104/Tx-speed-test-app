@@ -11,22 +11,33 @@ import {
     useColorModeValue,
     Link,
     Icon,
+    chakra,
   } from '@chakra-ui/react';
   import React, { useState } from 'react'
   import { useStopwatch } from "react-timer-hook";
   import { toast } from 'react-toastify'
   import BeatLoader from "react-spinners/BeatLoader";
   import { HiOutlineExternalLink } from 'react-icons/hi'
+  import { motion, useAnimation } from 'framer-motion'
   
   export default function Card(props) {
+    const [confirmed, setConfirmed] = useState(false)
     const [loading, setLoading] = useState(false);
     const [txHash, setTxHash] = useState('');
-    const { seconds, minutes, hours, isRunning, start, pause, reset } = useStopwatch({ autoStart: false });
+    const { seconds, minutes, start, pause, reset } = useStopwatch({ autoStart: false });
+
+    const MotionBox = motion(chakra.div)
+
+    const variants = {
+      confirmed: { scale: [1, 1.4, 1.8, 1.4, 1]}
+    }
+
     const shortenString = (str, n) => {
       return (str.length > n) ? str.slice(0, n-1) + '...' : str;
     }
 
-    const handleTransfer = async () => {
+    const handleTransfer = async () => { 
+      seconds ? reset() : '';
       setTxHash('');
       const transactionHash = await fetchTransactionHash();
       console.log(transactionHash);
@@ -34,6 +45,7 @@ import {
     }
 
     const fetchTransactionHash = async () => {
+      setConfirmed(false);
       setLoading(true);
       start();
       toast('transaction sended!')
@@ -54,6 +66,7 @@ import {
       setLoading(false);
       pause();
       toast('transaction confirmed!')
+      setConfirmed(true);
       return (await resp.json()).receipt.transactionHash;
     }
     
@@ -92,7 +105,14 @@ import {
   
             <Stack direction={'row'} justify={'center'} spacing={6}>
               <Stack spacing={0} align={'center'}>
-                <Text fontWeight={600}>{minutes ? <>{minutes}m</> : (<></>)}{seconds}s</Text>
+                <MotionBox
+                  cursor="pointer"
+                  animate={confirmed ? 'confirmed' : '' }
+                  transition={{ duration: 0.5 }}
+                  variants={variants}
+                >
+                  <Text fontWeight={600}>{minutes ? <>{minutes}m</> : (<></>)}{seconds}s</Text>
+                </MotionBox>
                 <Text fontSize={'sm'} color={'gray.500'}>
                   Tx speed
                 </Text>
