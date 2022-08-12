@@ -9,7 +9,7 @@ const Home: NextPage = () => {
     <>
       <Navbar />
       <Center>
-        <Grid gridTemplateColumns={{sm: 'repeat(1, 1fr)', lg: 'repeat(3, 1fr)'}} gap={6}>
+        <Grid gridTemplateColumns={{sm: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)'}} gap={6}>
           <Card
             name="ethereum"
             icon="https://s2.coinmarketcap.com/static/img/coins/200x200/1027.png"
@@ -22,10 +22,16 @@ const Home: NextPage = () => {
             img="https://bittimes.net/wp-content/uploads/2022/05/Polygon-MATIC-Logo-450.jpg"
             scanURI="https://mumbai.polygonscan.com/tx/"
           ></Card>
-          <Card
-            name="ohaiyo"
+          {/* <Card
+            name="aptos"
             icon="https://cdn-images-1.medium.com/max/1200/1*aEUc1bvEC4etWj6JTg6VMg.png"
             img="https://imgs.coinpost-ext.com/uploads/2022/07/aptos-ftx.jpeg"
+            scanURI="https://mumbai.polygonscan.com/tx/"
+          ></Card> */}
+          <Card
+            name="ohaiyo"
+            icon="http://illustrain.com/img/work/2016/illustrain10-aisatu01.png"
+            img="https://cdn.britannica.com/09/3209-004-BA716BBF/Ohio-circle-flag-cavalry-status-United-States-1902.jpg"
             scanURI="https://mumbai.polygonscan.com/tx/"
           ></Card>
         </Grid>

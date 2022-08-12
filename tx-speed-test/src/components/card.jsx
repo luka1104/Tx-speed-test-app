@@ -39,12 +39,20 @@ import {
     const handleTransfer = async () => { 
       seconds ? reset() : '';
       setTxHash('');
-      const transactionHash = await fetchTransactionHash();
+      const transactionHash = await fetchTransactionHash('transfer');
       console.log(transactionHash);
       setTxHash(transactionHash);
     }
 
-    const fetchTransactionHash = async () => {
+    const handleOhaiyoTransfer = async () => { 
+      seconds ? reset() : '';
+      setTxHash('');
+      const transactionHash = await fetchTransactionHash('transferOhaiyo');
+      console.log(transactionHash);
+      setTxHash(transactionHash);
+    }
+
+    const fetchTransactionHash = async (path) => {
       setConfirmed(false);
       setLoading(true);
       start();
@@ -53,7 +61,7 @@ import {
         'address': "0x50B80aa3877fC852f3194a0331177FDDcF0891bf",
         'chain': props.name
       }
-      const resp = await fetch(`/api/transfer`, {
+      const resp = await fetch(`/api/${path}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +138,7 @@ import {
             </Stack>
               <Button
                 disabled={loading}
-                onClick={handleTransfer}
+                onClick={props.name === 'ohaiyo' ? handleOhaiyoTransfer : handleTransfer}
                 w="full"
                 mt={8}
                 bg={useColorModeValue('#151f21', 'gray.900')}
