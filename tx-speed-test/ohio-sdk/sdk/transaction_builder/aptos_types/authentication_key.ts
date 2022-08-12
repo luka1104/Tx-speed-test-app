@@ -30,6 +30,7 @@ export class AuthenticationKey {
    * authenticating the transaction. `0x01` is the 1-byte scheme for multisig.
    */
   static fromMultiEd25519PublicKey(publicKey: MultiEd25519PublicKey): AuthenticationKey {
+    // @ts-ignore
     const bytes = new Uint8Array([...publicKey.toBytes(), AuthenticationKey.MULTI_ED25519_SCHEME]);
     const hash = SHA3.sha3_256.create();
     hash.update(Buffer.from(bytes));

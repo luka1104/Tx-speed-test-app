@@ -47,7 +47,7 @@ import {
     const handleOhaiyoTransfer = async () => { 
       seconds ? reset() : '';
       setTxHash('');
-      const transactionHash = await fetchTransactionHash('transferOhaiyo');
+      const transactionHash = await fetchTransactionHash('transferOhio');
       console.log(transactionHash);
       setTxHash(transactionHash);
     }
@@ -138,7 +138,7 @@ import {
             </Stack>
               <Button
                 disabled={loading}
-                onClick={props.name === 'ohaiyo' ? handleOhaiyoTransfer : handleTransfer}
+                onClick={props.name === 'ohio' ? handleOhaiyoTransfer : handleTransfer}
                 w="full"
                 mt={8}
                 bg={useColorModeValue('#151f21', 'gray.900')}

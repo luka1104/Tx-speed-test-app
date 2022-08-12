@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import "dotenv/config";
 import { readFileSync } from "fs";
-import { AptosClient, AptosAccount, FaucetClient, Types } from "../../aptos-sdk/sdk";
+import { AptosClient, AptosAccount, FaucetClient, Types } from "../../ohio-sdk/sdk";
 
 const transfer = async () => {
 

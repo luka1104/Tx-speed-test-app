@@ -19,8 +19,8 @@ export class RequestError extends Error {
   requestBody?: string;
 
   constructor(message?: string, response?: AxiosResponse<any, Types.AptosError>, requestBody?: string) {
-    const data = JSON.stringify(response.data);
-    const hostAndPath = [response.request?.host, response.request?.path].filter((e) => !!e).join("");
+    const data = JSON.stringify(response?.data);
+    const hostAndPath = [response?.request?.host, response?.request?.path].filter((e) => !!e).join("");
     super(`${message} - ${data}${hostAndPath ? ` @ ${hostAndPath}` : ""}${requestBody ? ` : ${requestBody}` : ""}`);
     this.response = response;
     this.requestBody = requestBody;
@@ -65,7 +65,7 @@ export class AptosClient {
 
   transactions: Transactions;
 
-  abis: Bytes[];
+  abis?: Bytes[];
 
   /**
    * Establishes a connection to Aptos node
@@ -556,7 +556,7 @@ export class AptosClient {
   // Only cache for a short period to avoid excessive amount of memory usage
   @MemoizeExpiring(2 * 60 * 1000) // Cache for 2min
   async getTxnBuilderWithABI(accountFrom: AptosAccount): Promise<TransactionBuilderEd25519> {
-    if (this.abis.length === 0) {
+    if (this?.abis?.length === 0) {
       throw new Error("ABIs are not provided.");
     }
 
@@ -565,7 +565,7 @@ export class AptosClient {
       this.getChainId(),
     ]);
 
-    const rawTxnBuilder = new TransactionBuilderABI(this.abis, {
+    const rawTxnBuilder = new TransactionBuilderABI(this.abis as any, {
       sender: accountFrom.address(),
       sequenceNumber,
       chainId,

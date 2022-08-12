@@ -246,6 +246,7 @@ export class TokenClient {
    */
   async getCollectionData(creator: MaybeHexString, collectionName: string): Promise<any> {
     const resources = await this.aptosClient.getAccountResources(creator);
+    // @ts-ignore
     const accountResource: { type: string; data: any } = resources.find((r) => r.type === "0x3::token::Collections");
     const { handle }: { handle: string } = accountResource.data.collection_data;
     const getCollectionTableItemRequest: Types.TableItemRequest = {

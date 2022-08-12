@@ -71,6 +71,7 @@ export class TransactionBuilder<F extends SigningFn> {
 
     const prefix = new Uint8Array(hash.arrayBuffer());
 
+    // @ts-ignore
     return Buffer.from([...prefix, ...bcsToBytes(rawTxn)]);
   }
 }
@@ -179,7 +180,9 @@ export class TransactionBuilderABI {
     });
 
     this.builderConfig = {
+      // @ts-ignore
       gasUnitPrice: 1n,
+      // @ts-ignore
       maxGasAmount: 1000n,
       expSecFromNow: 10,
       ...builderConfig,
@@ -261,12 +264,15 @@ export class TransactionBuilderABI {
       payload = new TransactionPayloadScript(new Script(funcABI.code, typeTags, scriptArgs));
     }
 
+    // @ts-ignore
     if (payload) {
       return new RawTransaction(
         senderAccount,
         BigInt(sequenceNumber),
         payload,
+        // @ts-ignore
         BigInt(maxGasAmount),
+        // @ts-ignore
         BigInt(gasUnitPrice),
         expTimetampSec,
         new ChainId(Number(chainId)),
