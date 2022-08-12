@@ -28,7 +28,7 @@ const transfer = async () => {
   
   
     // Create a contract
-    const file = readFileSync("./src/contracts/DemoToken.bin");
+    const file = readFileSync("./DemoToken.bin");
     let payload: Types.TransactionPayload = {
       type: "contract_bundle_payload",
       modules: [{ bytecode: file.toString() }],
