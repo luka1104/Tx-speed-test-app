@@ -103,9 +103,9 @@ const transfer = async () => {
     transactionRes = await client.submitTransaction(signedTxn);
     await client.waitForTransaction(transactionRes.hash);
     let receipt = await client.getTransaction(transactionRes.hash);
-    console.log(receipt);
+    console.log(receipt.hash);
 
-    return receipt;
+    return receipt.hash;
     // return transactionRes;
   
     resources = await client.getAccountResources(account.address());

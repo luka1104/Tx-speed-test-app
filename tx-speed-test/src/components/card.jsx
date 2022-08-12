@@ -41,7 +41,7 @@ import {
       setTxHash('');
       const transactionHash = await fetchTransactionHash('transfer');
       console.log(transactionHash);
-      setTxHash(transactionHash);
+      setTxHash(transactionHash.transactionHash);
     }
 
     const handleOhaiyoTransfer = async () => { 
@@ -75,7 +75,7 @@ import {
       pause();
       toast('transaction confirmed!')
       setConfirmed(true);
-      return (await resp.json()).receipt.transactionHash;
+      return (await resp.json()).receipt;
     }
     
     return (
