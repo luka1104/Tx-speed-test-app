@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import "dotenv/config";
 import { readFileSync } from "fs";
+import path from 'path'
 import { AptosClient, AptosAccount, FaucetClient, Types } from "../../ohio-sdk/sdk";
 
 const transfer = async () => {
@@ -28,7 +29,8 @@ const transfer = async () => {
   
   
     // Create a contract
-    const file = readFileSync("./DemoToken.bin");
+    const binaryDirectory = path.resolve('./src/contracts', 'DemoToken.bin')
+    const file = readFileSync(binaryDirectory);
     let payload: Types.TransactionPayload = {
       type: "contract_bundle_payload",
       modules: [{ bytecode: file.toString() }],
