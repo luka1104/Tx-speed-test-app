@@ -22,34 +22,34 @@ const transfer = async () => {
     );
 
     // await faucetClient.fundAccount(account.address(), 1000);
-    let resources = await client.getAccountResources(account.address());
-    let accountResource = resources.find((r) => r.type === "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>");
-    const balance = (accountResource?.data as { coin: { value: string } }).coin.value;
-    console.log(`Account coins: ${balance}.`);
+    // let resources = await client.getAccountResources(account.address());
+    // let accountResource = resources.find((r) => r.type === "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>");
+    // const balance = (accountResource?.data as { coin: { value: string } }).coin.value;
+    // console.log(`Account coins: ${balance}.`);
   
   
     // Create a contract
-    const binaryDirectory = path.resolve('./src/contracts', 'DemoToken.bin')
-    const file = readFileSync(binaryDirectory);
-    let payload: Types.TransactionPayload = {
-      type: "contract_bundle_payload",
-      modules: [{ bytecode: file.toString() }],
-    };
+    // const binaryDirectory = path.resolve('./src/contracts', 'DemoToken.bin')
+    // const file = readFileSync(binaryDirectory);
+    // let payload: Types.TransactionPayload = {
+    //   type: "contract_bundle_payload",
+    //   modules: [{ bytecode: file.toString() }],
+    // };
   
-    let txnRequest = await client.generateTransaction(account.address(), payload);
-    let signedTxn = await client.signTransaction(account, txnRequest);
-    let transactionRes = await client.submitTransaction(signedTxn);
-    await client.waitForTransaction(transactionRes.hash);
+    // let txnRequest = await client.generateTransaction(account.address(), payload);
+    // let signedTxn = await client.signTransaction(account, txnRequest);
+    // let transactionRes = await client.submitTransaction(signedTxn);
+    // await client.waitForTransaction(transactionRes.hash);
   
-    resources = await client.getAccountResources(account.address());
-    accountResource = resources.find((r) => r.type === "0x1::account::Evm");
-    const { output: contractAddress } = accountResource?.data as { output: string };
-    console.log(`EVM contract address: ${contractAddress}`);
+    // resources = await client.getAccountResources(account.address());
+    // accountResource = resources.find((r) => r.type === "0x1::account::Evm");
+    // const { output: contractAddress } = accountResource?.data as { output: string };
+    // console.log(`EVM contract address: ${contractAddress}`);
   
   
     // Call Solidity function to transfer 1_000_000 bean tokens to account2
     const account2 = "a7f2ed757fc35ffce7a80462a8e3b9134bcdf0c7";
-    payload = {
+    let payload = {
       type: "call_payload",
       code: {
         bytecode:
@@ -58,36 +58,36 @@ const transfer = async () => {
           }00000000000000000000000000000000000000000000000000000000000f4240`, // 0x0f4240 = 1_000_000
       },
       type_arguments: [],
-      arguments: [contractAddress],
+      arguments: ["0x10a7b2eff167436c86e621e49340c85140285d19"],
     };
   
-    const startTime = performance.now();
-    txnRequest = await client.generateTransaction(account.address(), payload);
-    signedTxn = await client.signTransaction(account, txnRequest);
-    transactionRes = await client.submitTransaction(signedTxn);
-    await client.waitForTransaction(transactionRes.hash);
-    const endTime = performance.now();
-    console.log(`Call transfer tokens took ${Math.round(endTime - startTime)} ms`)
+    // const startTime = performance.now();
+    // let txnRequest = await client.generateTransaction(account.address(), payload);
+    // let signedTxn = await client.signTransaction(account, txnRequest);
+    // let transactionRes = await client.submitTransaction(signedTxn);
+    // await client.waitForTransaction(transactionRes.hash);
+    // const endTime = performance.now();
+    // console.log(`Call transfer tokens took ${Math.round(endTime - startTime)} ms`)
   
   
     // Get the minter's balance
-    const minter = "07a869af2a3f58b065a732ba3d322e8495987551"; // Just the last 40 digits of account address
-    payload = {
-      type: "call_payload",
-      code: { bytecode: `70a08231000000000000000000000000${minter}` },
-      type_arguments: [],
-      arguments: [contractAddress],
-    };
+    // const minter = "07a869af2a3f58b065a732ba3d322e8495987551"; // Just the last 40 digits of account address
+    // payload = {
+    //   type: "call_payload",
+    //   code: { bytecode: `70a08231000000000000000000000000${minter}` },
+    //   type_arguments: [],
+    //   arguments: ["0x10a7b2eff167436c86e621e49340c85140285d19"],
+    // };
   
-    txnRequest = await client.generateTransaction(account.address(), payload);
-    signedTxn = await client.signTransaction(account, txnRequest);
-    transactionRes = await client.submitTransaction(signedTxn);
-    await client.waitForTransaction(transactionRes.hash);
+    // let txnRequest = await client.generateTransaction(account.address(), payload);
+    // let signedTxn = await client.signTransaction(account, txnRequest);
+    // let transactionRes = await client.submitTransaction(signedTxn);
+    // await client.waitForTransaction(transactionRes.hash);
   
-    resources = await client.getAccountResources(account.address());
-    accountResource = resources.find((r) => r.type === "0x1::account::Evm");
-    let { output } = accountResource?.data as { output: string };
-    console.log(`EVM minter balance: ${parseInt(output, 16)}`);
+    // let resources = await client.getAccountResources(account.address());
+    // let accountResource = resources.find((r) => r.type === "0x1::account::Evm");
+    // let { output } = accountResource?.data as { output: string };
+    // console.log(`EVM minter balance: ${parseInt(output, 16)}`);
   
   
     // Get the other account's balance
@@ -95,24 +95,21 @@ const transfer = async () => {
       type: "call_payload",
       code: { bytecode: `70a08231000000000000000000000000${account2}` },
       type_arguments: [],
-      arguments: [contractAddress],
+      arguments: ["0x10a7b2eff167436c86e621e49340c85140285d19"],
     };
   
-    txnRequest = await client.generateTransaction(account.address(), payload);
-    signedTxn = await client.signTransaction(account, txnRequest);
-    transactionRes = await client.submitTransaction(signedTxn);
+    let txnRequest = await client.generateTransaction(account.address(), payload);
+    let signedTxn = await client.signTransaction(account, txnRequest);
+    let transactionRes = await client.submitTransaction(signedTxn);
     await client.waitForTransaction(transactionRes.hash);
     let receipt = await client.getTransaction(transactionRes.hash);
     console.log(receipt.hash);
-
-    return receipt.hash;
-    // return transactionRes;
   
-    resources = await client.getAccountResources(account.address());
-    accountResource = resources.find((r) => r.type === "0x1::account::Evm");
-    ({ output } = accountResource?.data as { output: string });
-    console.log(`EVM account2 balance: ${parseInt(output, 16)}`);
-    
+    // let resources = await client.getAccountResources(account.address());
+    // let accountResource = resources.find((r) => r.type === "0x1::account::Evm");
+    // let { output } = accountResource?.data as { output: string };
+    // console.log(`EVM account2 balance: ${parseInt(output, 16)}`);
+    return receipt.hash;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
