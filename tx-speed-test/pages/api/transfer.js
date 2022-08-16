@@ -45,6 +45,6 @@ const handler = async (req, res) => {
                 res.status(200).json({ receipt: rec })
             }
         });
-    }, 1000);
+    }, 100);
 };
 export default handler;

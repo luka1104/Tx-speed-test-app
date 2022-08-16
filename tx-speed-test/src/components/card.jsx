@@ -13,18 +13,23 @@ import {
     Icon,
     chakra,
   } from '@chakra-ui/react';
-  import React, { useState } from 'react'
-  import { useStopwatch } from "react-timer-hook";
+  import React, { useState, useEffect } from 'react'
   import { toast } from 'react-toastify'
   import BeatLoader from "react-spinners/BeatLoader";
   import { HiOutlineExternalLink } from 'react-icons/hi'
-  import { motion, useAnimation } from 'framer-motion'
+  import { motion } from 'framer-motion'
   
   export default function Card(props) {
     const [confirmed, setConfirmed] = useState(false)
     const [loading, setLoading] = useState(false);
     const [txHash, setTxHash] = useState('');
-    const { seconds, minutes, start, pause, reset } = useStopwatch({ autoStart: false });
+    const [time, setTime] = useState(0);
+    const [start, setStart] = useState(false);
+
+    const mSeconds = ("0" + (Math.floor((time / 10) % 100) % 100)).slice(-2);
+    const seconds = ("0" + (Math.floor((time / 1000) % 60) % 60)).slice(-2);
+    const minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
+
 
     const MotionBox = motion(chakra.div)
 
@@ -37,7 +42,6 @@ import {
     }
 
     const handleTransfer = async () => { 
-      seconds ? reset() : '';
       setTxHash('');
       const transactionHash = await fetchTransactionHash('transfer');
       console.log(transactionHash);
@@ -45,7 +49,6 @@ import {
     }
 
     const handleOhaiyoTransfer = async () => { 
-      seconds ? reset() : '';
       setTxHash('');
       const transactionHash = await fetchTransactionHash('transferOhio');
       console.log(transactionHash);
@@ -55,8 +58,8 @@ import {
     const fetchTransactionHash = async (path) => {
       setConfirmed(false);
       setLoading(true);
-      start();
-      toast('transaction sended!')
+      setStart(true);
+      toast('transaction sent!')
       const data = {
         'address': "0x50B80aa3877fC852f3194a0331177FDDcF0891bf",
         'chain': props.name
@@ -72,11 +75,29 @@ import {
         throw Error("Server error");
       }
       setLoading(false);
-      pause();
+      setStart(false);
       toast('transaction confirmed!')
       setConfirmed(true);
       return (await resp.json()).receipt;
     }
+ 
+    useEffect(() => {
+      console.log('useeffect');
+      let interval = null;
+      console.log(time);
+      if (start) {
+        interval = setInterval(() => {
+          if (time >= 0) {
+            setTime(prevTime => prevTime + 10)
+          }
+        }, 10)
+      } else {
+        clearInterval(interval);
+      }
+      return () => {
+        clearInterval(interval)
+      }
+    }, [start])
     
     return (
       <Center py={6}>
@@ -119,7 +140,7 @@ import {
                   transition={{ duration: 0.5 }}
                   variants={variants}
                 >
-                  <Text fontWeight={600}>{minutes ? <>{minutes}m</> : (<></>)}{seconds}s</Text>
+                  <Text fontWeight={600}>{minutes > 0 ? <>{minutes}m</> : (<></>)}{seconds + "." + mSeconds}s</Text>
                 </MotionBox>
                 <Text fontSize={'sm'} color={'gray.500'}>
                   Tx speed
@@ -127,7 +148,7 @@ import {
               </Stack>
               <Stack spacing={0} align={'center'}>
                 {txHash ? (
-                  <Link href={props.scanURI + txHash} fontWeight={600}>{shortenString(txHash, 6)}<Icon ml='2px' verticalAlign="-15%" as={HiOutlineExternalLink} /></Link>
+                  <Link target="_blank" href={props.scanURI + txHash} fontWeight={600}>{shortenString(txHash, 6)}<Icon ml='2px' verticalAlign="-15%" as={HiOutlineExternalLink} /></Link>
                 ) : (
                   <Text fontWeight={600}>-</Text>
                 )}
