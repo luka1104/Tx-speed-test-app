@@ -56,6 +56,7 @@ import {
     }
 
     const fetchTransactionHash = async (path) => {
+      time ? setTime(0) : '';
       setConfirmed(false);
       setLoading(true);
       setStart(true);
