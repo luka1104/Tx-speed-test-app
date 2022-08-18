@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import "dotenv/config";
 import { readFileSync } from "fs";
 import path from 'path'
-import { AptosClient, AptosAccount, FaucetClient, Types } from "../../ohio-sdk/sdk";
+import { AptosClient, AptosAccount, FaucetClient, Types, HexString } from "../../ohio-sdk/sdk";
 
 const transfer = async () => {
 
@@ -20,6 +20,7 @@ const transfer = async () => {
         ]),
         "0x59504cad27074c7ff8ac6af807a869af2a3f58b065a732ba3d322e8495987551",
     );
+    console.log(account.toPrivateKeyObject());
 
     // await faucetClient.fundAccount(account.address(), 1000);
     // let resources = await client.getAccountResources(account.address());
