@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import "dotenv/config";
 import { readFileSync } from "fs";
 import path from 'path'
-import { AptosClient, AptosAccount, FaucetClient, Types, HexString } from "../../ohio-sdk/sdk";
+import { AptosClient, AptosAccount, FaucetClient, Types, HexString } from "aptos";
 
 const transfer = async () => {
 
@@ -11,6 +11,7 @@ const transfer = async () => {
     const FAUCET_URL = process.env.APTOS_FAUCET_URL || "https://faucet.devnet.aptoslabs.com";
 
     const client = new AptosClient(NODE_URL);
+    const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL, undefined);
 
     const account = new AptosAccount(
         new Uint8Array([
@@ -42,8 +43,8 @@ const transfer = async () => {
     // let transactionRes = await client.submitTransaction(signedTxn);
     // await client.waitForTransaction(transactionRes.hash);
   
-    // resources = await client.getAccountResources(account.address());
-    // accountResource = resources.find((r) => r.type === "0x1::account::Evm");
+    // let resources = await client.getAccountResources(account.address());
+    // let accountResource = resources.find((r) => r.type === "0x1::account::Evm");
     // const { output: contractAddress } = accountResource?.data as { output: string };
     // console.log(`EVM contract address: ${contractAddress}`);
   
@@ -59,7 +60,7 @@ const transfer = async () => {
           }00000000000000000000000000000000000000000000000000000000000f4240`, // 0x0f4240 = 1_000_000
       },
       type_arguments: [],
-      arguments: ["0x10a7b2eff167436c86e621e49340c85140285d19"],
+      arguments: ["0x71577b672348ebd64511ba9ccaeb98f9919b1b50"],
     };
   
     // const startTime = performance.now();
@@ -103,7 +104,7 @@ const transfer = async () => {
     let signedTxn = await client.signTransaction(account, txnRequest);
     let transactionRes = await client.submitTransaction(signedTxn);
     await client.waitForTransaction(transactionRes.hash);
-    let receipt = await client.getTransaction(transactionRes.hash);
+    let receipt = await client.getTransactionByHash(transactionRes.hash);
     console.log(receipt.hash);
   
     // let resources = await client.getAccountResources(account.address());
