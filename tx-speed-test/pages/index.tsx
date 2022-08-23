@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             name="ohio"
             icon="http://illustrain.com/img/work/2016/illustrain10-aisatu01.png"
             img="https://cdn.britannica.com/09/3209-004-BA716BBF/Ohio-circle-flag-cavalry-status-United-States-1902.jpg"
-            scanURI="http://54.225.13.60:8080/transactions/"
+            scanURI={`${process.env.APTOS_NODE_URL}/transactions/by_hash/`}
           ></Card>
         </Grid>
       </Center>
